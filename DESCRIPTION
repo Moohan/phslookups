@@ -19,6 +19,7 @@ Imports:
     dplyr,
     fs,
     glue,
+    phsmethods,
     readr,
     rlang,
     tibble
