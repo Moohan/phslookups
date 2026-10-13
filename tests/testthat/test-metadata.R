@@ -71,7 +71,7 @@ test_that("metadata reads file and attaches metadata when ref$exists is TRUE", {
 
 test_that("inform_metadata_access emits information message", {
   expect_message(
-    inform_metadata_access(),
+    inform_metadata_access(tibble::tibble()),
     "Metadata is available"
   )
 })

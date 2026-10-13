@@ -55,7 +55,10 @@ setup_mock_pop_dir <- function() {
 
 test_that("all high-level output options work with mock data", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   outputs <- c(
     "long",
@@ -78,7 +81,10 @@ test_that("all high-level output options work with mock data", {
 
 test_that("all low-level output options work with split mock parquet files", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   outputs <- c(
     "long",
@@ -101,7 +107,10 @@ test_that("all low-level output options work with split mock parquet files", {
 
 test_that("high-level and low-level population totals consistency on mock data", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   # High level consistency
   hb_long <- get_hb_pop_est(output = "long")
@@ -130,7 +139,10 @@ test_that("high-level and low-level population totals consistency on mock data",
 
 test_that("year filtering works on mock data", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   hb_2020 <- get_hb_pop_est(min_year = 2020L, max_year = 2020L)
   expect_setequal(hb_2020$year, 2020L)
@@ -158,7 +170,10 @@ test_that("invalid version format errors", {
 
 test_that("valid-looking but unavailable version errors", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   expect_error(
     get_hb_pop_est(version = "1900"),
@@ -175,7 +190,10 @@ test_that("invalid output option errors", {
 
 test_that("year filters outside the available range error", {
   mock_dir <- setup_mock_pop_dir()
-  testthat::local_mocked_bindings(get_lookups_dir = function() mock_dir)
+  testthat::local_mocked_bindings(
+    get_lookups_dir = function() mock_dir,
+    .package = "phslookups"
+  )
 
   expect_error(
     get_hb_pop_est(
