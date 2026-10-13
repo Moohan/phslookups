@@ -1,3 +1,5 @@
+# --- CI Tests (No network required) ---
+
 test_that("get_national_ref_file validates filename", {
   expect_error(
     get_national_ref_file(NULL),
@@ -20,8 +22,10 @@ test_that("get_national_ref_file validates filename", {
   )
 })
 
+# --- Real File Tests (Guarded by skip_if_not(have_access())) ---
+
 test_that("National Reference Files directory exists", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
   national_ref_dir <- fs::path(
     get_lookups_dir(),
@@ -32,35 +36,37 @@ test_that("National Reference Files directory exists", {
 })
 
 test_that("get_national_ref_file reads a National Reference File", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
-  gpprac <- get_national_ref_file("gpprac")
+  gpprac <- get_national_ref_file("gpprac", col_select = c("praccode", "postcode"))
 
   expect_s3_class(gpprac, "tbl_df")
   expect_gt(nrow(gpprac), 0L)
   expect_gt(ncol(gpprac), 0L)
+  expect_snapshot(dim(gpprac))
+  expect_snapshot(names(gpprac))
 })
 
 test_that("get_national_ref_file ignores supplied file extension", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
-  without_ext <- get_national_ref_file("gpprac")
-  with_ext <- get_national_ref_file("gpprac.csv")
+  without_ext <- get_national_ref_file("gpprac", col_select = "praccode")
+  with_ext <- get_national_ref_file("gpprac.csv", col_select = "praccode")
 
   expect_identical(with_ext, without_ext)
 })
 
 test_that("get_national_ref_file matches case-insensitively", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
-  lower_case <- get_national_ref_file("gpprac")
-  mixed_case <- get_national_ref_file("GPprac.csv")
+  lower_case <- get_national_ref_file("gpprac", col_select = "praccode")
+  mixed_case <- get_national_ref_file("GPprac.csv", col_select = "praccode")
 
   expect_identical(mixed_case, lower_case)
 })
 
 test_that("get_national_ref_file supports col_select with character vectors", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
   gpprac <- get_national_ref_file(
     "gpprac",
@@ -72,7 +78,7 @@ test_that("get_national_ref_file supports col_select with character vectors", {
 })
 
 test_that("get_national_ref_file supports col_select with tidyselect", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
   gpprac <- get_national_ref_file(
     "gpprac",
@@ -85,7 +91,7 @@ test_that("get_national_ref_file supports col_select with tidyselect", {
 })
 
 test_that("get_national_ref_file errors when file is not found", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
   expect_error(
     get_national_ref_file("definitely_not_a_real_national_ref_file"),
@@ -99,42 +105,40 @@ test_that("get_national_ref_file errors when file is not found", {
 })
 
 test_that("suggests close National Reference File names", {
-  skip_on_ci()
+  skip_if_not(have_access())
 
-  test_that("suggests close National Reference File names", {
-    expect_snapshot(
-      get_national_ref_file("ggprac"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("ggprac"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("gprac"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("gprac"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("loction"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("loction"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("locaiton"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("locaiton"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("speciality"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("speciality"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("specailty"),
-      error = TRUE
-    )
+  expect_snapshot(
+    get_national_ref_file("specailty"),
+    error = TRUE
+  )
 
-    expect_snapshot(
-      get_national_ref_file("rac"),
-      error = TRUE
-    )
-  })
+  expect_snapshot(
+    get_national_ref_file("rac"),
+    error = TRUE
+  )
 })
