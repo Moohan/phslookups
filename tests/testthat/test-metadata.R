@@ -43,10 +43,11 @@ test_that("metadata errors when ref$exists is FALSE", {
 
 test_that("metadata reads file and attaches metadata when ref$exists is TRUE", {
   tmp_csv <- tempfile(fileext = ".csv")
-  readr::write_csv(
-    tibble::tibble(
-      v = c("var1", "pc7"),
-      d = c("desc1", "Postcode")
+  writeLines(
+    c(
+      "header_var,header_desc",
+      "var1,desc1",
+      "pc7,Postcode"
     ),
     tmp_csv
   )
@@ -67,6 +68,9 @@ test_that("metadata reads file and attaches metadata when ref$exists is TRUE", {
 
   expect_s3_class(meta_res, "tbl_df")
   expect_named(meta_res, c("variable", "description"))
+  expect_equal(nrow(meta_res), 2L)
+  expect_equal(meta_res$variable, c("var1", "pc7"))
+  expect_equal(meta_res$description, c("desc1", "Postcode"))
 })
 
 test_that("inform_metadata_access emits information message", {
