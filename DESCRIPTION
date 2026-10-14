@@ -27,7 +27,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.2.0)
 Config/roxygen2/markdown: TRUE
 Config/roxygen2/version: 8.1.1
 Config/testthat/edition: 3

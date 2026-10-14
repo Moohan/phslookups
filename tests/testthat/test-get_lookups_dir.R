@@ -1,5 +1,3 @@
-skip_on_ci()
-
 test_that("Lookup dir is as expected", {
   expect_snapshot(get_lookups_dir(), variant = .Platform$OS.type)
   expect_type(get_lookups_dir(), "character")

@@ -26,7 +26,6 @@ test_that("Can find latest file by file name", {
     expect_message("\"z9\"")
 })
 
-
 test_that("Returns error if no files match the regex", {
   empty_dir <- fs::dir_create(tempdir(), "find_file_empty")
   expect_error(
@@ -64,6 +63,7 @@ test_that("Returns error if directory has no files", {
 })
 
 test_that("Invalid selection_method fails", {
+  dir5 <- fs::dir_create(tempdir(), "find_file_invalid_method")
   expect_error(
     find_latest_file(dir5, "a1[.]csv", selection_method = "invalid")
   )
